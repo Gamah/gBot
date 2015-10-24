@@ -78,9 +78,9 @@ def parse(line):
 class commands:
 
     def smug(info):
-        s = "Fuck you, "
+        s = "Fuck you "
         if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg']))):
-            s += info['user']
+            s += ", " + info['user']
         else:
             s += info['msg'][len(info['botcmd']) + 1:]
         s += "! :]"
