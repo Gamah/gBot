@@ -90,7 +90,7 @@ class commands:
     def paddy(info):
 	    say("Get off my lawn!")
     def uncle(info):
-	    say("!smug gbot")
+	    say("HACK THE PLANET!")
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
