@@ -125,6 +125,6 @@ while 1:
                     title = tree.xpath('//title/text()')
                     say("^ " + title[0])
                 except Exception:
-                    say("^ I'm ill equipped to parse this correctly...")
+                    print("^ I'm ill equipped to parse this correctly...")
     
                
