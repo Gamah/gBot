@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-import sys
 import socket
 import string
-import re
-import os
 from lxml import html
 import requests
+import json
+import urllib.request
 
 import cfg
 
@@ -90,12 +89,25 @@ class commands:
     def paddy(info):
 	    say("Get off my lawn!")
     def uncle(info):
-	    say("HACK THE PLANET!")
+        say("HACK THE PLANET!")
+    def norris(info):
+        msg = info['msg'][len(info['botcmd']):].split()
+        url = "http://api.icndb.com/jokes/random"
+        if(len(msg) > 0):
+            url += "?firstName=" + msg[0] + "&lastName="
+        if(len(msg) > 1):
+            url += msg[1]
+        req = urllib.request.urlopen(url)
+        resp = req.read()
+        joke = json.loads(resp.decode('utf8'))
+        say(joke['value']['joke'])
+
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
-	"!uncle" : uncle,
-        "!smug" : smug
+        "!uncle" : uncle,
+        "!smug" : smug,
+        "!cn" : norris
     }
     
 bot = commands()
@@ -119,8 +131,9 @@ while 1:
                 #print("probs a command")
                 try:
                     bot.cmdlist[x['botcmd']](x)
-                except Exception:
-                    print(x['botcmd']," is not a command!")
+                except Exception as FUCK:
+                    print(FUCK)
+                    #print(x['botcmd']," is not a command!")
             elif(x['msg'][:7] == "http://" or x['msg'][:4] == "www." or x['msg'][:8] == "https://"):
                 try:
                     page = requests.get(line[3][1:])
@@ -128,6 +141,6 @@ while 1:
                     title = tree.xpath('//title/text()')
                     say("^ " + title[0])
                 except Exception:
-                    print("^ I'm ill equipped to parse this correctly...")
+                    print("Bad url in message: ", x['msg'])
     
                
