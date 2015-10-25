@@ -89,9 +89,12 @@ class commands:
        say("out of ten!")
     def paddy(info):
 	    say("Get off my lawn!")
+    def uncle(info):
+	    say("HACK THE PLANET!")
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
+	"!uncle" : uncle,
         "!smug" : smug
     }
     
