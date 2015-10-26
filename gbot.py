@@ -101,13 +101,21 @@ class commands:
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
         say(joke['value']['joke'])
+    def bacon(info):
+        msg = info['msg'][len(info['botcmd']):].split()
+        print(msg)
+        if(len(msg) == 1):
+            say("\001ACTION gives " + msg[0] + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
+        else:
+            say("\001ACTION gives " + info['user'] + " a delicious strip of bacon. \001")
 
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
         "!uncle" : uncle,
         "!smug" : smug,
-        "!cn" : norris
+        "!cn" : norris,
+        "!bacon" : bacon
     }
     
 bot = commands()
