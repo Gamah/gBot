@@ -6,6 +6,7 @@ from lxml import html
 import requests
 import json
 import urllib.request
+import html
 
 import cfg
 
@@ -100,7 +101,7 @@ class commands:
         req = urllib.request.urlopen(url)
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
-        say(joke['value']['joke'])
+        say(html.unescape(joke['value']['joke']))
     def bacon(info):
         msg = info['msg'][len(info['botcmd']):].split()
         print(msg)
