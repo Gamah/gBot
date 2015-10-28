@@ -6,7 +6,9 @@ from lxml import html
 import requests
 import json
 import urllib.request
-import html
+from html import unescape
+
+import traceback
 
 import cfg
 
@@ -82,7 +84,7 @@ class commands:
         if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'][len(info['botcmd']):].isspace())):
             s += info['user']
         else:
-            s += info['msg'][len(info['botcmd']) + 1:]
+            s += info['msg'][len(info['botcmd']) + 1:-1]
         s += "! :]"
         say(s)
     def swag(info):
@@ -101,7 +103,7 @@ class commands:
         req = urllib.request.urlopen(url)
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
-        say(html.unescape(joke['value']['joke']))
+        say(unescape(joke['value']['joke']))
     def bacon(info):
         msg = info['msg'][len(info['botcmd']):].split()
         print(msg)
@@ -150,6 +152,10 @@ while 1:
                     title = tree.xpath('//title/text()')
                     say("^ " + title[0])
                 except Exception:
+                    print(traceback.format_exc())
                     print("Bad url in message: ", x['msg'])
+                    print(type(Exception))
+                    print(Exception.args)
+                    print(Exception)
     
                
