@@ -8,8 +8,6 @@ import json
 import urllib.request
 from html import unescape
 
-import traceback
-
 import cfg
 
 HOST = cfg.HOST
@@ -67,34 +65,26 @@ def say(msg):
     s.send(bytes("PRIVMSG %s :%s\r\n" % (CHANNEL, msg), "UTF-8"))
     return True
     
-def parse(line):
-	out = {
-	    'user' : getusr(line[0]),
-	    'cmd' : line[1],
-	    'channel' :line[2],
-	    'msg' : getmsg(line),
-	    'botcmd' : getcmd(line)
-	}
-	return(out)
+
 	
 class commands:
-
-    def smug(info):
+    usrlist = []
+    def smug(info,usrs):
         s = "Fuck you, "
-        if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'][len(info['botcmd']):].isspace())):
+        if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace())):
             s += info['user']
         else:
-            s += info['msg'][len(info['botcmd']) + 1:-1]
+            s += info['msg'][:-1]
         s += "! :]"
         say(s)
-    def swag(info):
+    def swag(info,usrs):
        say("out of ten!")
-    def paddy(info):
+    def paddy(info,usrs):
 	    say("Get off my lawn!")
-    def uncle(info):
+    def uncle(info,usrs):
         say("HACK THE PLANET!")
-    def norris(info):
-        msg = info['msg'][len(info['botcmd']):].split()
+    def norris(info,usrs):
+        msg = info['msg'].split()
         url = "http://api.icndb.com/jokes/random"
         if(len(msg) > 0):
             url += "?firstName=" + msg[0] + "&lastName="
@@ -104,22 +94,54 @@ class commands:
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
         say(unescape(joke['value']['joke']))
-    def bacon(info):
-        msg = info['msg'][len(info['botcmd']):].split()
-        print(msg)
-        if(len(msg) == 1):
-            say("\001ACTION gives " + msg[0] + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
+    def bacon(info,usrs):
+        if(info['msg'].replace(" ","") in usrs):
+            say("\001ACTION gives " + info['msg'] + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
         else:
-            say("\001ACTION gives " + info['user'] + " a delicious strip of bacon. \001")
-
+            say("\001ACTION gives " + info['user'] + " a delicious strip of bacon.  \001")
+    def listusr(info,users):
+        say("I reckon there are " + str(len(users)) + " users!")
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
         "!uncle" : uncle,
         "!smug" : smug,
         "!cn" : norris,
-        "!bacon" : bacon
+        "!bacon" : bacon,
+        "!users" : listusr
     }
+    
+    def parse(self,line):
+		#info returned to main loop for further processing
+        out = {
+            'user' : getusr(line[0]),
+	        'cmd' : line[1],
+            'channel' :line[2],
+            'msg' : getmsg(line)[len(getcmd(line)):],
+            'botcmd' : getcmd(line)
+        }
+        #handle userlist here... WIP.
+        if (out['cmd'] == "353"):
+			#this is terrible... find a better way later
+            newusrs = line[6:]
+            newusrs = ' '.join(newusrs).replace('@','').split()
+            newusrs = ' '.join(newusrs).replace('%','').split()
+            newusrs = ' '.join(newusrs).replace('+','').split()
+            newusrs = ' '.join(newusrs).replace(':','').split()
+            newusrs = ' '.join(newusrs).replace('~','').split()
+            self.usrlist = self.usrlist + newusrs
+        if (out['cmd'] == "PART"):
+            self.usrlist.remove(out['user'])
+        if (out['cmd'] == "JOIN"):
+            self.usrlist.append(out['user'])
+        if (out['cmd'] == "KICK"):
+            self.usrlist.remove(line[3])
+        #run commands
+        try:
+            self.cmdlist[out['botcmd']](out,self.usrlist)
+        except Exception as FUCK:
+            print(FUCK)
+        return(out)
     
 bot = commands()
 while 1:
@@ -131,31 +153,21 @@ while 1:
         line = str.rstrip(line)
         #print(line)
         line = str.split(line)
+        #must respond to pings to receive new messages
         if(line[0] == "PING"):
             s.send(bytes("PONG %s\r\n" % line[1], "UTF-8"))
         elif(CONNECTED == 0):
             joinch(line)
+        #housekeeping done, be a bot
         else:
-            x = parse(line)
+            x = bot.parse(line)
             print (x)
-            if (x['botcmd'] != ""):
-                #print("probs a command")
-                try:
-                    bot.cmdlist[x['botcmd']](x)
-                except Exception as FUCK:
-                    print(FUCK)
-                    #print(x['botcmd']," is not a command!")
-            elif(x['msg'][:7] == "http://" or x['msg'][:4] == "www." or x['msg'][:8] == "https://"):
+            #print(bot.usrlist)
+            if(x['msg'][:7] == "http://" or x['msg'][:4] == "www." or x['msg'][:8] == "https://"):
                 try:
                     page = requests.get(line[3][1:])
                     tree = html.fromstring(page.text)
                     title = tree.xpath('//title/text()')
                     say("^ " + title[0])
                 except Exception:
-                    print(traceback.format_exc())
                     print("Bad url in message: ", x['msg'])
-                    print(type(Exception))
-                    print(Exception.args)
-                    print(Exception)
-    
-               
