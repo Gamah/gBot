@@ -130,11 +130,11 @@ class commands:
             newusrs = ' '.join(newusrs).replace(':','').split()
             newusrs = ' '.join(newusrs).replace('~','').split()
             self.usrlist = self.usrlist + newusrs
-        if (out['cmd'] == "PART" or out['cmd'] == "QUIT"):
+        if (out['cmd'] == "PART"):
             self.usrlist.remove(out['user'])
         if (out['cmd'] == "JOIN"):
             self.usrlist.append(out['user'])
-        if (out['cmd'] == "KICK"):
+        if (out['cmd'] == "KICK" or out['cmd'] == "QUIT"):
             self.usrlist.remove(line[3])
         #run commands
         try:
