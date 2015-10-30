@@ -121,21 +121,21 @@ class commands:
             'botcmd' : getcmd(line)
         }
         #handle userlist here... WIP.
-        if (out['cmd'] == "353"):
-			#this is terrible... find a better way later
-            newusrs = line[6:]
-            newusrs = ' '.join(newusrs).replace('@','').split()
-            newusrs = ' '.join(newusrs).replace('%','').split()
-            newusrs = ' '.join(newusrs).replace('+','').split()
-            newusrs = ' '.join(newusrs).replace(':','').split()
-            newusrs = ' '.join(newusrs).replace('~','').split()
-            self.usrlist = self.usrlist + newusrs
-        if (out['cmd'] == "PART"):
-            self.usrlist.remove(out['user'])
-        if (out['cmd'] == "JOIN"):
-            self.usrlist.append(out['user'])
-        if (out['cmd'] == "KICK" or out['cmd'] == "QUIT"):
-            self.usrlist.remove(line[3])
+#        if (out['cmd'] == "353"):
+#			#this is terrible... find a better way later
+#            newusrs = line[6:]
+#            newusrs = ' '.join(newusrs).replace('@','').split()
+#            newusrs = ' '.join(newusrs).replace('%','').split()
+#            newusrs = ' '.join(newusrs).replace('+','').split()
+#            newusrs = ' '.join(newusrs).replace(':','').split()
+#            newusrs = ' '.join(newusrs).replace('~','').split()
+#            self.usrlist = self.usrlist + newusrs
+#        if (out['cmd'] == "PART"):
+#            self.usrlist.remove(out['user'])
+#        if (out['cmd'] == "JOIN"):
+#            self.usrlist.append(out['user'])
+#        if (out['cmd'] == "KICK" or out['cmd'] == "QUIT"):
+#            self.usrlist.remove(line[3])
         #run commands
         try:
             self.cmdlist[out['botcmd']](out,self.usrlist)
