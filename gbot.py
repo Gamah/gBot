@@ -190,11 +190,11 @@ while 1:
 
             # check if the message in a channel contains a protocol or or www.
             if (x['cmd'] == 'PRIVMSG'):
-                if( x['msg'].find("htt") != -1 or x['msg'].find("www.") != -1):
+                if( x['msg'].find("http") != -1 or x['msg'].find("www.") != -1):
                     msgArray = x['msg'].split(" ")
                     for l in msgArray:
                         if (isURL(l)):
                             # check if the link has a protocol if not add http
-                            if (l.lower().find('htt') == -1):
+                            if not l.lower().startswith("http"):
                                 l = 'http://' + l
                             getTitle(l)
