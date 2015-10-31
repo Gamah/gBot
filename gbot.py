@@ -127,6 +127,19 @@ class commands:
             say("\001ACTION gives " + info['user'] + " a delicious strip of bacon.  \001")
     def listusr(info,users):
         say("I reckon there are " + str(len(users)) + " users!")
+    def btc(info,usrs):
+        money = 0
+        cur = 'USD'
+        msg = info['msg'].split()
+        url = "https://api.bitcoinaverage.com/ticker/global/all"
+        req = urllib.request.urlopen(url)
+        resp = req.read()
+        data = json.loads(resp.decode('utf8'))
+        if(len(msg) > 0):
+            if(msg[0] in data):
+                cur = msg[0]
+        say(info['user'] + ": 1 BTC = " + str(data[cur]['ask']) + " " + cur)
+
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
@@ -135,7 +148,8 @@ class commands:
         "!smug" : smug,
         "!cn" : norris,
         "!bacon" : bacon,
-        "!users" : listusr
+        "!users" : listusr,
+        "!btc" : btc
     }
 
     def parse(self,line):
