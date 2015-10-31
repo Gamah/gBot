@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import socket
 import string
@@ -7,8 +7,13 @@ import requests
 import json
 import urllib.request
 from html import unescape
+import re
 
 import cfg
+
+# this thing is global so it only has to be compiled into a regex object once
+URLpattern = re.compile(r"((http(s)?):\/\/|(www\.)|(http(s)?):\/\/(www\.))[?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)")
+
 
 HOST = cfg.HOST
 PORT = cfg.PORT
@@ -17,7 +22,7 @@ IDENT = cfg.IDENT
 REALNAME = cfg.REALNAME
 CHANNEL = cfg.CHANNEL
 KEY = cfg.KEY
- 
+
 CONNECTED = 0
 
 readbuffer = ""
@@ -42,7 +47,7 @@ def getcmd(line):
         if (line[3][:2] == ":!"):
             botcmd = line[3][1:]
     return (botcmd)
-	
+
 def getusr(line):
     sender = ""
     for char in line:
@@ -56,7 +61,7 @@ def getmsg(line):
     size = len(line)
     i = 3
     message = ""
-    while(i < size): 
+    while(i < size):
         message += line[i] + " "
         i = i + 1
     message.lstrip(":")
@@ -64,9 +69,28 @@ def getmsg(line):
 def say(msg):
     s.send(bytes("PRIVMSG %s :%s\r\n" % (CHANNEL, msg), "UTF-8"))
     return True
-    
 
-	
+# get the title from a link and send it to the channel
+def getTitle(link):
+    try:
+        page = requests.get(link)
+        tree = html.fromstring(page.text)
+        title = tree.xpath('//title/text()')
+        say("^ " + title[0])
+    except Exception:
+        print("Bad url in message: ", msg)
+
+# checks if given string is a url
+# it must start with either http(s):// and/or www. and contain only
+# characters that are acceptable in URLs
+def isURL(string):
+    match = URLpattern.fullmatch(string)
+    if match:
+        return True
+    else:
+        return False
+
+
 class commands:
     usrlist = []
     def smug(info,usrs):
@@ -110,7 +134,7 @@ class commands:
         "!bacon" : bacon,
         "!users" : listusr
     }
-    
+
     def parse(self,line):
 		#info returned to main loop for further processing
         out = {
@@ -142,7 +166,7 @@ class commands:
         except Exception as FUCK:
             print(FUCK)
         return(out)
-    
+
 bot = commands()
 while 1:
     global CONNECTED
@@ -163,11 +187,14 @@ while 1:
             x = bot.parse(line)
             print (x)
             #print(bot.usrlist)
-            if(x['msg'][:7] == "http://" or x['msg'][:4] == "www." or x['msg'][:8] == "https://"):
-                try:
-                    page = requests.get(line[3][1:])
-                    tree = html.fromstring(page.text)
-                    title = tree.xpath('//title/text()')
-                    say("^ " + title[0])
-                except Exception:
-                    print("Bad url in message: ", x['msg'])
+
+            # check if the message in a channel contains a protocol or or www.
+            if (x['cmd'] == 'PRIVMSG'):
+                if( x['msg'].find("htt") != -1 or x['msg'].find("www.") != -1):
+                    msgArray = x['msg'].split(" ")
+                    for l in msgArray:
+                        if (isURL(l)):
+                            # check if the link has a protocol if not add http
+                            if (l.lower().find('htt') == -1):
+                                l = 'http://' + l
+                            getTitle(l)

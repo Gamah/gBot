@@ -1,7 +1,7 @@
-HOST = "changeme"
+HOST = "irc.geekshed.net"
 PORT = 6667
-NICK = "changeme"
+NICK = "gBotFork"
 IDENT = NICK
 REALNAME = NICK
-CHANNEL = "changeme"
+CHANNEL = "#testsandstuff"
 KEY = ""
