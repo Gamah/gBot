@@ -78,7 +78,7 @@ def getTitle(link):
         title = tree.xpath('//title/text()')
         say("^ " + title[0])
     except Exception:
-        print("Bad url in message: ", msg)
+        print("Bad url in message: ", link)
 
 # checks if given string is a url
 # it must start with either http(s):// and/or www. and contain only
