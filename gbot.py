@@ -108,7 +108,7 @@ class commands:
     def uncle(info,usrs):
         say("HACK THE PLANET!")
     def dogetick(info,usrs):
-        say("1 DOGE = 1 DOGE")        
+        say("1 DOGE = 1 DOGE")
     def norris(info,usrs):
         msg = info['msg'].split()
         url = "http://api.icndb.com/jokes/random"
@@ -189,7 +189,7 @@ class commands:
         if (out['cmd'] == "JOIN" and out['user'] != NICK):
             self.usrlist.append(out['user'])
         if (out['cmd'] == "KICK"):
-			
+
             self.usrlist.remove(line[3])
         #run commands
         try:
@@ -220,7 +220,7 @@ while 1:
             #print(bot.usrlist)
 
             # check if the message in a channel contains a protocol or or www.
-            if (x['cmd'] == 'PRIVMSG'):
+            if (x['cmd'] == 'PRIVMSG' and x['channel'] == CHANNEL):
                 if( x['msg'].find("http") != -1 or x['msg'].find("www.") != -1):
                     msgArray = x['msg'].split(" ")
                     for l in msgArray:
