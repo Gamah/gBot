@@ -165,12 +165,15 @@ class commands:
         #handle userlist here... WIP.
         if (out['cmd'] == "353"):
 			#this is terrible... find a better way later
-            newusrs = line[6:]
+            newusrs = line[5:]
             newusrs = ' '.join(newusrs).replace('@','').split()
             newusrs = ' '.join(newusrs).replace('%','').split()
             newusrs = ' '.join(newusrs).replace('+','').split()
             newusrs = ' '.join(newusrs).replace(':','').split()
             newusrs = ' '.join(newusrs).replace('~','').split()
+            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
+            print(newusrs)
+            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
             self.usrlist = self.usrlist + newusrs
         if(out['cmd'] == "NICK"):
             self.usrlist.remove(out['user'])
@@ -178,7 +181,7 @@ class commands:
             self.usrlist.append(out['channel'][1:])
         if (out['cmd'] == "PART" or out['cmd'] == "QUIT"):
             self.usrlist.remove(out['user'])
-        if (out['cmd'] == "JOIN"):
+        if (out['cmd'] == "JOIN" and out['user'] != NICK):
             self.usrlist.append(out['user'])
         if (out['cmd'] == "KICK"):
 			
