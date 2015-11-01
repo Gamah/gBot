@@ -2,5 +2,7 @@ This is gBot, a Python 3 irc bot written by noobs for noobs.
 It's meant to be easy to understand and easy to adapt without the use of pre-existing IRC libraries.
 
 TODO:
-Handle nick changes
+Implement !help command which dynamically handles existing commands
+Detect connection failure and reconnect
+Refactor socket parsing
 A lot of other stuff.
