@@ -201,7 +201,7 @@ while 1:
     readbuffer=temp.pop( )
     for line in temp:
         line = str.rstrip(line)
-        print(line)
+        #print(line)
         line = str.split(line)
         #must respond to pings to receive new messages
         if(line[0] == "PING"):
@@ -211,7 +211,7 @@ while 1:
         #housekeeping done, be a bot
         else:
             x = bot.parse(line)
-            #print (x)
+            print (x)
             #print(bot.usrlist)
 
             # check if the message in a channel contains a protocol or or www.
