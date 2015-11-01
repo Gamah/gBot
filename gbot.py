@@ -171,9 +171,6 @@ class commands:
             newusrs = ' '.join(newusrs).replace('+','').split()
             newusrs = ' '.join(newusrs).replace(':','').split()
             newusrs = ' '.join(newusrs).replace('~','').split()
-            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
-            print(newusrs)
-            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
             self.usrlist = self.usrlist + newusrs
         if(out['cmd'] == "NICK"):
             self.usrlist.remove(out['user'])
