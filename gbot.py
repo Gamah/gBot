@@ -140,7 +140,14 @@ class commands:
             if(msg[0] in data):
                 cur = msg[0]
         say(info['user'] + ": 1 BTC = " + str(data[cur]['ask']) + " " + cur)
-
+    def lenny(info,usrs):
+        usr = ""
+        msg = info['msg'].split()
+        if(len(msg) > 0 and msg[0] in usrs):
+            usr = msg[0]
+        else:
+            usr = info['user']
+        say( usr + ": ( ͡° ͜ʖ ͡°)")
     cmdlist ={
         "!swag" : swag,
         "!paddy" : paddy,
@@ -150,7 +157,8 @@ class commands:
         "!cn" : norris,
         "!bacon" : bacon,
         "!users" : listusr,
-        "!btc" : btc
+        "!btc" : btc,
+        "!lenny" : lenny
     }
 
     def parse(self,line):
