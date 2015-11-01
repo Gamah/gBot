@@ -58,7 +58,12 @@ def getusr(line):
     return (sender)
 
 def getmsg(line):
-    message = " ".join(line[3:])
+    size = len(line)
+    i = 3
+    message = ""
+    while(i < size):
+        message += line[i] + " "
+        i = i + 1
     message.lstrip(":")
     return message[1:]
 def say(msg):
