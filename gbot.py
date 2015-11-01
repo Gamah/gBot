@@ -107,6 +107,8 @@ class commands:
 	    say("Get off my lawn!")
     def uncle(info,usrs):
         say("HACK THE PLANET!")
+    def dogetick(info,usrs):
+        say("1 DOGE = 1 DOGE")        
     def norris(info,usrs):
         msg = info['msg'].split()
         url = "http://api.icndb.com/jokes/random"
@@ -143,6 +145,7 @@ class commands:
         "!swag" : swag,
         "!paddy" : paddy,
         "!uncle" : uncle,
+        "!dogetick" : dogetick,
         "!smug" : smug,
         "!cn" : norris,
         "!bacon" : bacon,
@@ -162,12 +165,15 @@ class commands:
         #handle userlist here... WIP.
         if (out['cmd'] == "353"):
 			#this is terrible... find a better way later
-            newusrs = line[6:]
+            newusrs = line[5:]
             newusrs = ' '.join(newusrs).replace('@','').split()
             newusrs = ' '.join(newusrs).replace('%','').split()
             newusrs = ' '.join(newusrs).replace('+','').split()
             newusrs = ' '.join(newusrs).replace(':','').split()
             newusrs = ' '.join(newusrs).replace('~','').split()
+            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
+            print(newusrs)
+            print("BUTTS BUTTS BUTTS BUTTS\n\n\n")
             self.usrlist = self.usrlist + newusrs
         if(out['cmd'] == "NICK"):
             self.usrlist.remove(out['user'])
@@ -175,7 +181,7 @@ class commands:
             self.usrlist.append(out['channel'][1:])
         if (out['cmd'] == "PART" or out['cmd'] == "QUIT"):
             self.usrlist.remove(out['user'])
-        if (out['cmd'] == "JOIN"):
+        if (out['cmd'] == "JOIN" and out['user'] != NICK):
             self.usrlist.append(out['user'])
         if (out['cmd'] == "KICK"):
 			
