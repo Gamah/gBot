@@ -125,6 +125,7 @@ class commands:
             say("\001ACTION gives " + info['user'] + " a delicious strip of bacon.  \001")
     def listusr(info,users):
         say("I reckon there are " + str(len(users)) + " users!")
+        print(users)
     def btc(info,usrs):
         money = 0
         cur = 'USD'
@@ -159,21 +160,26 @@ class commands:
             'botcmd' : getcmd(line)
         }
         #handle userlist here... WIP.
-#        if (out['cmd'] == "353"):
-#			#this is terrible... find a better way later
-#            newusrs = line[6:]
-#            newusrs = ' '.join(newusrs).replace('@','').split()
-#            newusrs = ' '.join(newusrs).replace('%','').split()
-#            newusrs = ' '.join(newusrs).replace('+','').split()
-#            newusrs = ' '.join(newusrs).replace(':','').split()
-#            newusrs = ' '.join(newusrs).replace('~','').split()
-#            self.usrlist = self.usrlist + newusrs
-#        if (out['cmd'] == "PART"):
-#            self.usrlist.remove(out['user'])
-#        if (out['cmd'] == "JOIN"):
-#            self.usrlist.append(out['user'])
-#        if (out['cmd'] == "KICK" or out['cmd'] == "QUIT"):
-#            self.usrlist.remove(line[3])
+        if (out['cmd'] == "353"):
+			#this is terrible... find a better way later
+            newusrs = line[6:]
+            newusrs = ' '.join(newusrs).replace('@','').split()
+            newusrs = ' '.join(newusrs).replace('%','').split()
+            newusrs = ' '.join(newusrs).replace('+','').split()
+            newusrs = ' '.join(newusrs).replace(':','').split()
+            newusrs = ' '.join(newusrs).replace('~','').split()
+            self.usrlist = self.usrlist + newusrs
+        if(out['cmd'] == "NICK"):
+            self.usrlist.remove(out['user'])
+            #fix this when socket parsing is reworked..
+            self.usrlist.append(out['channel'][1:])
+        if (out['cmd'] == "PART" or out['cmd'] == "QUIT"):
+            self.usrlist.remove(out['user'])
+        if (out['cmd'] == "JOIN"):
+            self.usrlist.append(out['user'])
+        if (out['cmd'] == "KICK"):
+			
+            self.usrlist.remove(line[3])
         #run commands
         try:
             self.cmdlist[out['botcmd']](out,self.usrlist)
@@ -189,7 +195,7 @@ while 1:
     readbuffer=temp.pop( )
     for line in temp:
         line = str.rstrip(line)
-        #print(line)
+        print(line)
         line = str.split(line)
         #must respond to pings to receive new messages
         if(line[0] == "PING"):
@@ -199,7 +205,7 @@ while 1:
         #housekeeping done, be a bot
         else:
             x = bot.parse(line)
-            print (x)
+            #print (x)
             #print(bot.usrlist)
 
             # check if the message in a channel contains a protocol or or www.
