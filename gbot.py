@@ -107,6 +107,8 @@ class commands:
 	    say("Get off my lawn!")
     def uncle(info,usrs):
         say("HACK THE PLANET!")
+    def greenlantern(info, usrs):
+    	say("ayy lmao")
     def dogetick(info,usrs):
         say("1 DOGE = 1 DOGE")        
     def norris(info,usrs):
@@ -152,6 +154,7 @@ class commands:
         "!swag" : swag,
         "!paddy" : paddy,
         "!uncle" : uncle,
+        "!greenlantern" : greenlantern,
         "!dogetick" : dogetick,
         "!smug" : smug,
         "!cn" : norris,
