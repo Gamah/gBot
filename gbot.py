@@ -92,7 +92,7 @@ def isURL(string):
 
 
 class commands:
-    usrlist = []
+    usrlist = {}
     def smug(info,usrs):
         s = "Fuck you, "
         if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace())):
@@ -152,10 +152,6 @@ class commands:
         say( usr + ": ( ͡° ͜ʖ ͡°)")
     cmdlist ={
         "!swag" : swag,
-        "!paddy" : paddy,
-        "!uncle" : uncle,
-        "!greenlantern" : greenlantern,
-        "!dogetick" : dogetick,
         "!smug" : smug,
         "!cn" : norris,
         "!bacon" : bacon,
@@ -182,21 +178,28 @@ class commands:
             newusrs = ' '.join(newusrs).replace('+','').split()
             newusrs = ' '.join(newusrs).replace(':','').split()
             newusrs = ' '.join(newusrs).replace('~','').split()
-            self.usrlist = self.usrlist + newusrs
+            for usr in newusrs:
+                self.usrlist[usr] = ""
         if(out['cmd'] == "NICK"):
-            self.usrlist.remove(out['user'])
-            #fix this when socket parsing is reworked..
-            self.usrlist.append(out['channel'][1:])
+            self.usrlist[out['channel'][1:]] = self.usrlist[out['user']]
+            del self.usrlist[out['user']]
         if (out['cmd'] == "PART" or out['cmd'] == "QUIT"):
-            self.usrlist.remove(out['user'])
+            del self.usrlist[out['user']]
         if (out['cmd'] == "JOIN" and out['user'] != NICK):
-            self.usrlist.append(out['user'])
+            self.usrlist[out['user']] = ""
         if (out['cmd'] == "KICK"):
-
-            self.usrlist.remove(line[3])
+            del self.usrlist[line[3]]
         #run commands
         try:
-            self.cmdlist[out['botcmd']](out,self.usrlist)
+            print(self.usrlist.keys())
+            if(out['botcmd'][1:] in self.usrlist.keys()):
+                if(out['botcmd'][1:] == out['user']):
+                    self.usrlist[out['user']] = out['msg']
+                else:
+                    if(not self.usrlist[out['botcmd'][1:]].isspace()):
+                        say(self.usrlist[out['botcmd'][1:]])
+            else:
+                self.cmdlist[out['botcmd']](out,self.usrlist)
         except Exception as FUCK:
             print(FUCK)
         return(out)
