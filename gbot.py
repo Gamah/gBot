@@ -191,7 +191,6 @@ class commands:
             del self.usrlist[line[3]]
         #run commands
         try:
-            print(self.usrlist.keys())
             if(out['botcmd'][1:] in self.usrlist.keys()):
                 if(out['botcmd'][1:] == out['user']):
                     self.usrlist[out['user']] = out['msg']
