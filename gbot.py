@@ -191,14 +191,15 @@ class commands:
             del self.usrlist[line[3]]
         #run commands
         try:
-            if(out['botcmd'][1:] in self.usrlist.keys()):
-                if(out['botcmd'][1:] == out['user']):
-                    self.usrlist[out['user']] = out['msg']
+            if(out['channel'] == CHANNEL):
+                if(out['botcmd'][1:] in self.usrlist.keys()):
+                    if(out['botcmd'][1:] == out['user']):
+                        self.usrlist[out['user']] = out['msg']
+                    else:
+                        if(not self.usrlist[out['botcmd'][1:]].isspace()):
+                            say(self.usrlist[out['botcmd'][1:]])
                 else:
-                    if(not self.usrlist[out['botcmd'][1:]].isspace()):
-                        say(self.usrlist[out['botcmd'][1:]])
-            else:
-                self.cmdlist[out['botcmd']](out,self.usrlist)
+                    self.cmdlist[out['botcmd']](out,self.usrlist)
         except Exception as FUCK:
             print(FUCK)
         return(out)
