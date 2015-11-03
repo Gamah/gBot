@@ -103,14 +103,6 @@ class commands:
         say(s)
     def swag(info,usrs):
        say("out of ten!")
-    def paddy(info,usrs):
-	    say("Get off my lawn!")
-    def uncle(info,usrs):
-        say("HACK THE PLANET!")
-    def greenlantern(info, usrs):
-    	say("ayy lmao")
-    def dogetick(info,usrs):
-        say("1 DOGE = 1 DOGE")
     def norris(info,usrs):
         msg = info['msg'].split()
         url = "http://api.icndb.com/jokes/random"
