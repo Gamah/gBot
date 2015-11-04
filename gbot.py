@@ -142,6 +142,13 @@ class commands:
         else:
             usr = info['user']
         say( usr + ": ( ͡° ͜ʖ ͡°)")
+    def eightball(info,usrs):
+        msg = info['msg'][len(info['botcmd']):]
+        url = "http://8ball.delegator.com/magic/JSON/"
+        req = urllib.request.urlopen(url + msg)
+        resp = req.read()
+        data = json.loads(resp.decode('utf8'))
+        say(data['magic']['answer'])
     cmdlist ={
         "!swag" : swag,
         "!smug" : smug,
@@ -149,7 +156,8 @@ class commands:
         "!bacon" : bacon,
         "!users" : listusr,
         "!btc" : btc,
-        "!lenny" : lenny
+        "!lenny" : lenny,
+        "!8ball" : eightball
     }
 
     def parse(self,line):
