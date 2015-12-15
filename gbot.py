@@ -150,8 +150,8 @@ class commands:
         data = json.loads(resp.decode('utf8'))
         say(data['magic']['answer'])
     cmdlist ={
-        "!swag" : swag,
         "!smug" : smug,
+        "!swag" : swag,
         "!cn" : norris,
         "!bacon" : bacon,
         "!users" : listusr,
