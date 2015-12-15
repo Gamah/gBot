@@ -25,6 +25,10 @@ KEY = cfg.KEY
 
 CONNECTED = 0
 
+headers = {
+    'User-Agent': 'Gbot Irc Bot By the gamah colective',
+}
+
 readbuffer = ""
 
 
@@ -73,10 +77,10 @@ def say(msg):
 # get the title from a link and send it to the channel
 def getTitle(link):
     try:
-        page = requests.get(link)
+        page = requests.get(link, headers=headers)
         tree = html.fromstring(page.text)
         title = tree.xpath('//title/text()')
-        say("^ " + title[0])
+        say("^ " + title[0].strip())
     except Exception:
         print("Bad url in message: ", link)
 
@@ -191,14 +195,15 @@ class commands:
             del self.usrlist[line[3]]
         #run commands
         try:
-            if(out['botcmd'][1:] in self.usrlist.keys()):
-                if(out['botcmd'][1:] == out['user']):
-                    self.usrlist[out['user']] = out['msg']
+            if(out['channel'] == CHANNEL):
+                if(out['botcmd'][1:] in self.usrlist.keys()):
+                    if(out['botcmd'][1:] == out['user']):
+                        self.usrlist[out['user']] = out['msg']
+                    else:
+                        if(not self.usrlist[out['botcmd'][1:]].isspace()):
+                            say(self.usrlist[out['botcmd'][1:]])
                 else:
-                    if(not self.usrlist[out['botcmd'][1:]].isspace()):
-                        say(self.usrlist[out['botcmd'][1:]])
-            else:
-                self.cmdlist[out['botcmd']](out,self.usrlist)
+                    self.cmdlist[out['botcmd']](out,self.usrlist)
         except Exception as FUCK:
             print(FUCK)
         return(out)
