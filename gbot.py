@@ -149,6 +149,11 @@ class commands:
         resp = req.read()
         data = json.loads(resp.decode('utf8'))
         say(data['magic']['answer'])
+    def wisdom(info,usrs):
+        page = requests.get('http://wisdomofchopra.com/iframe.php')
+        tree = html.fromstring(page.content)
+        quote = tree.xpath('//table//td[@id="quote"]//header//h2/text()')
+        say(quote[0][1:-3])
     cmdlist ={
         "!smug" : smug,
         "!swag" : swag,
@@ -157,7 +162,8 @@ class commands:
         "!users" : listusr,
         "!btc" : btc,
         "!lenny" : lenny,
-        "!8ball" : eightball
+        "!8ball" : eightball,
+        "!wisdom" : wisdom
     }
 
     def parse(self,line):
