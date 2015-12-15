@@ -76,7 +76,7 @@ def getTitle(link):
         page = requests.get(link)
         tree = html.fromstring(page.text)
         title = tree.xpath('//title/text()')
-        say("^ " + title[0])
+        say("^ " + title[0].strip())
     except Exception:
         print("Bad url in message: ", link)
 
