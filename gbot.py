@@ -115,8 +115,9 @@ class commands:
         joke = json.loads(resp.decode('utf8'))
         say(unescape(joke['value']['joke']))
     def bacon(info,usrs):
-        if(info['msg'].replace(" ","") in usrs):
-            say("\001ACTION gives " + info['msg'] + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
+    	msg = info['msg'].replace(" ","")
+        if(msg in usrs):
+            say("\001ACTION gives " + msg + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
         else:
             say("\001ACTION gives " + info['user'] + " a delicious strip of bacon.  \001")
     def listusr(info,users):
