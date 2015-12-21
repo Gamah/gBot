@@ -77,7 +77,7 @@ def say(msg):
 # get the title from a link and send it to the channel
 def getTitle(link):
     try:
-        page = requests.get(link, headers=headers)
+        page = requests.get(link, headers=headers, timeout=(5,20))
         tree = html.fromstring(page.text)
         title = tree.xpath('//title/text()')
         say("^ " + title[0].strip())
