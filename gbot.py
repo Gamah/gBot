@@ -218,7 +218,6 @@ class commands:
 
 bot = commands()
 while 1:
-    global CONNECTED
     readbuffer = readbuffer+s.recv(1024).decode("UTF-8",'ignore')
     temp = str.split(readbuffer, "\n")
     readbuffer=temp.pop( )
