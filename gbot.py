@@ -118,7 +118,7 @@ class commands:
         req = urllib.request.urlopen(url)
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
-        say(unescape(joke['value']['joke']))
+        say(unescape(joke['value']['joke']).replace("  ", " "))
     def bacon(info,usrs):
         msg = info['msg'].replace(" ","")
         if(msg in usrs):
