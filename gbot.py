@@ -25,6 +25,10 @@ KEY = cfg.KEY
 
 CONNECTED = 0
 
+headers = {
+    'User-Agent': 'Gbot Irc Bot By the gamah colective',
+}
+
 readbuffer = ""
 
 
@@ -73,10 +77,10 @@ def say(msg):
 # get the title from a link and send it to the channel
 def getTitle(link):
     try:
-        page = requests.get(link)
+        page = requests.get(link, headers=headers)
         tree = html.fromstring(page.text)
         title = tree.xpath('//title/text()')
-        say("^ " + title[0])
+        say("^ " + title[0].strip())
     except Exception:
         print("Bad url in message: ", link)
 
