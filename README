@@ -1,7 +1,17 @@
 This is gBot, a Python 3 irc bot written by noobs for noobs. 
 It's meant to be easy to understand and easy to adapt without the use of pre-existing IRC libraries.
 
-TODO:
+Non-standard modules:
+lxml
+requests
+
+Setup:
+1.) Install non-standard modules however you like, I suggest pip. Testing and deployment of this project lives entirely in Ubuntu 14.04 and 15.10.
+2.) Modify cfg.py file to fit your parameters as necesasry.
+3.) Run python3 gbot.py in your favorite terminal. I do this in a screen session for monitoring.
+
+
+To-Do:
 Implement !help command which dynamically handles existing commands
 Detect connection failure and reconnect
 Refactor socket parsing

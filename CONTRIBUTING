@@ -1,0 +1,5 @@
+Please do not submit PR's for issues for special case issues. It should be noted that while some commands do exist and are presently managed in the project, when the commands module is implemented they will go away. At that time a new repo for the commands on irc.geekshed.net #gamahcode will be created. For the time being, PR's that do not add new features/fixes/functionality to gbot as a project will not be considered.
+
+The testing branch will be short lived, submit PR's to master.
+
+You should create and vet issues with your concerns before submitting PR's.
