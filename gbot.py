@@ -26,7 +26,7 @@ KEY = cfg.KEY
 CONNECTED = 0
 
 headers = {
-    'User-Agent': 'Gbot the easy Python IRC bot',
+    'User-Agent': 'gBot: The IRC bot for noobs by noobs',
 }
 
 readbuffer = ""
@@ -77,7 +77,8 @@ def say(msg):
 # get the title from a link and send it to the channel
 def getTitle(link):
     try:
-        page = requests.get(link, headers=headers)
+        page = requests.get(link, headers=headers, timeout=(5,20))
+        page.encoding = 'UTF-8'
         tree = html.fromstring(page.text)
         title = tree.xpath('//title/text()')
         say("^ " + title[0].strip())
@@ -98,11 +99,12 @@ def isURL(string):
 class commands:
     usrlist = {}
     def smug(info,usrs):
+        msg = info['msg'].replace(" ","")
         s = "Fuck you, "
-        if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace())):
+        if ((msg not in usrs) or (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace()))):
             s += info['user']
         else:
-            s += info['msg'][:-1]
+            s += msg
         s += "! :]"
         say(s)
     def swag(info,usrs):
@@ -117,10 +119,11 @@ class commands:
         req = urllib.request.urlopen(url)
         resp = req.read()
         joke = json.loads(resp.decode('utf8'))
-        say(unescape(joke['value']['joke']))
+        say(unescape(joke['value']['joke']).replace("  ", " "))
     def bacon(info,usrs):
-        if(info['msg'].replace(" ","") in usrs):
-            say("\001ACTION gives " + info['msg'] + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
+        msg = info['msg'].replace(" ","")
+        if(msg in usrs):
+            say("\001ACTION gives " + msg + " a delicious strip of bacon as a gift from " + info['user'] + "! \001")
         else:
             say("\001ACTION gives " + info['user'] + " a delicious strip of bacon.  \001")
     def listusr(info,users):
@@ -153,15 +156,21 @@ class commands:
         resp = req.read()
         data = json.loads(resp.decode('utf8'))
         say(data['magic']['answer'])
+    def wisdom(info,usrs):
+        page = requests.get('http://wisdomofchopra.com/iframe.php')
+        tree = html.fromstring(page.content)
+        quote = tree.xpath('//table//td[@id="quote"]//header//h2/text()')
+        say(quote[0][1:-3])
     cmdlist ={
-        "!swag" : swag,
         "!smug" : smug,
+        "!swag" : swag,
         "!cn" : norris,
         "!bacon" : bacon,
         "!users" : listusr,
         "!btc" : btc,
         "!lenny" : lenny,
-        "!8ball" : eightball
+        "!8ball" : eightball,
+        "!wisdom" : wisdom
     }
 
     def parse(self,line):
@@ -210,7 +219,6 @@ class commands:
 
 bot = commands()
 while 1:
-    global CONNECTED
     readbuffer = readbuffer+s.recv(1024).decode("UTF-8",'ignore')
     temp = str.split(readbuffer, "\n")
     readbuffer=temp.pop( )
