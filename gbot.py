@@ -26,7 +26,7 @@ KEY = cfg.KEY
 CONNECTED = 0
 
 headers = {
-    'User-Agent': 'Gbot Irc Bot By the gamah colective',
+    'User-Agent': 'gBot: The IRC bot for noobs by noobs',
 }
 
 readbuffer = ""
