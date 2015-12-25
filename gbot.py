@@ -99,11 +99,12 @@ def isURL(string):
 class commands:
     usrlist = {}
     def smug(info,usrs):
+        msg = info['msg'].replace(" ","")
         s = "Fuck you, "
-        if (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace())):
+        if ((msg not in usrs) or (("gamah" in str.lower(info['msg'])) or (str.lower(NICK) in str.lower(info['msg'])) or(info['msg'].isspace()))):
             s += info['user']
         else:
-            s += info['msg'][:-1]
+            s += msg
         s += "! :]"
         say(s)
     def swag(info,usrs):
