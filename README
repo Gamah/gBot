@@ -12,7 +12,8 @@ Setup:
 
 
 To-Do:
+Remove dependency on external requests module, do all HTTP things with urllib
 Implement !help command which dynamically handles existing commands
 Detect connection failure and reconnect
 Refactor socket parsing
-A lot of other stuff.
+A lot of other stuff...
