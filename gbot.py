@@ -164,7 +164,8 @@ class commands:
     cmdlist ={
         "!smug" : smug,
         "!swag" : swag,
-        "!cn" : norris,
+        #temporarily disabled due to  potential eploit allowing arbitrary data to be sent over the socket
+        #"!cn" : norris,
         "!bacon" : bacon,
         "!users" : listusr,
         "!btc" : btc,
